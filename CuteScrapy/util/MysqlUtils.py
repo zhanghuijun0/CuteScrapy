@@ -1,6 +1,6 @@
 # coding:utf8
 # 导入:
-from sqlalchemy import Column, String, create_engine,MetaData
+from sqlalchemy import Column, String, create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -9,7 +9,6 @@ class ORM():
     baseCls = None
 
     def __init__(self):
-        # settings = project.get_project_settings()  # get settings
         self.SCRAPY_MYSQL_HOST = 'mysql+mysqlconnector://root:@localhost:3306/crawl'
         self.engine = self._getEngine()
 
@@ -46,7 +45,7 @@ class ORM():
             print e
             return False
 
-    def addData(self,model):
+    def addData(self, model):
         session = self.getSession()
         session.merge(model)
         try:
@@ -57,5 +56,3 @@ class ORM():
         finally:
             # 关闭session:
             session.close()
-
-

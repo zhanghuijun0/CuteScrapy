@@ -10,12 +10,15 @@ import scrapy
 
 class CutescrapyItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    blog_type = scrapy.Field()
-    article_url = scrapy.Field()
-    article_title = scrapy.Field()
-    brief = scrapy.Field()
-    dateline = scrapy.Field()
-    blog_url = scrapy.Field()
-    nick_name = scrapy.Field()
+    site = scrapy.Field()
+    url = scrapy.Field()
+    title = scrapy.Field()
     label = scrapy.Field()
+    brief = scrapy.Field()
+    post_date = scrapy.Field()
+    blog = scrapy.Field()
+    author = scrapy.Field()
+    pv = scrapy.Field()
+    num_reviews = scrapy.Field()
+    diggnum = scrapy.Field()
+    burynum = scrapy.Field()

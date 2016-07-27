@@ -13,24 +13,28 @@ from CuteScrapy.model.blogs import Blogs
 
 
 class CutescrapyPipeline(object):
-
     def __init__(self):
         self.orm = ORM()
 
     def process_item(self, item, spider):
         now = datetime.datetime.now()
         blog = Blogs()
-        blog.blog_type = item['blog_type']
-        blog.article_url = item['article_url']
-        blog.article_title = item['article_title']
-        blog.brief = item['brief']
-        blog.dateline = item['dateline']
-        blog.blog_url = item['blog_url']
-        blog.nick_name = item['nick_name']
+        blog.site = item['site']
+        blog.url = item['url']
+        blog.title = item['title']
         blog.label = item['label']
+        blog.brief = item['brief']
+        blog.post_date = item['post_date']
+        blog.blog = item['blog']
+        blog.author = item['author']
+        blog.pv = item['pv']
+        blog.num_reviews = item['num_reviews']
+        blog.diggnum = item['diggnum']
+        blog.burynum = item['burynum']
         blog.date_update = now.strftime('%Y-%m-%d %H:%M:%S')
-        # logger.info(blog.article_url + ',' + blog.article_title+','+blog.dateline)
+        # self.writeMetaFile(blog.title+','+blog.url+','+blog.label+','+blog.brief)
+
         try:
             self.orm.addData(blog)
         except Exception as e:
-            print e
+            logger.error(e)
