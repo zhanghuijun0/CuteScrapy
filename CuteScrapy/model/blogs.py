@@ -10,7 +10,7 @@ Base = ORM.getBase()
 
 
 class Blogs(Base):
-    __tablename__ = 'blogs_list'
+    __tablename__ = 'blogs_list_test'
     # __table_args__ = (UniqueConstraint('article_url','dateline', name='uidx_ids'),)
     #
     # id = Column(INTEGER, primary_key=True)
