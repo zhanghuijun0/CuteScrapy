@@ -22,3 +22,5 @@ class CutescrapyItem(scrapy.Item):
     num_reviews = scrapy.Field()
     diggnum = scrapy.Field()
     burynum = scrapy.Field()
+    date_update = scrapy.Field()
+    date_create = scrapy.Field()
