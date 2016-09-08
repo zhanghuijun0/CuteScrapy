@@ -14,6 +14,8 @@ BOT_NAME = 'CuteScrapy'
 SPIDER_MODULES = ['CuteScrapy.spiders']
 NEWSPIDER_MODULE = 'CuteScrapy.spiders'
 
+RESOURCE_DIR = "/Users/huijunzhang/PycharmProjects/CuteScrapy/CuteScrapy/resource"
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'CuteScrapy (+http://www.yourdomain.com)'
@@ -52,6 +54,29 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
+'''
+Default :
+{
+    'scrapy.downloadermiddlewares.robotstxt.RobotsTxtMiddleware': 100,
+    'scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware': 300,
+    'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware': 350,
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 400,
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware': 500,
+    'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware': 550,
+    'scrapy.downloadermiddlewares.ajaxcrawl.AjaxCrawlMiddleware': 560,
+    'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware': 580,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 590,
+    'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': 600,
+    'scrapy.downloadermiddlewares.cookies.CookiesMiddleware': 700,
+    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 750,
+    'scrapy.downloadermiddlewares.chunked.ChunkedTransferMiddleware': 830,
+    'scrapy.downloadermiddlewares.stats.DownloaderStats': 850,
+    'scrapy.downloadermiddlewares.httpcache.HttpCacheMiddleware': 900,
+}
+
+'''
+
+
 #DOWNLOADER_MIDDLEWARES = {
 #    'CuteScrapy.middlewares.MyCustomDownloaderMiddleware': 543,
 #}

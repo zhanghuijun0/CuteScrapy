@@ -1,5 +1,6 @@
 # coding:utf8
 __author__ = 'zhanghj'
+from CuteScrapy.resource.ResourceHelper import ResourceHelper
 import requests
 from lxml import etree
 import json
@@ -21,7 +22,13 @@ class OsChinaHelper():
         with open('../resource/' + filename, 'a') as f:
             f.write(text.encode('utf8'))
 
+    def readjson(self):
+        resourceHelper = ResourceHelper()
+        json = resourceHelper.loadJson('oschina_kinds.json')
+        for item in json:
+            print item
 
 if __name__ == '__main__':
     osChinaHelper = OsChinaHelper()
     # osChinaHelper.getkinds_oschina()
+    osChinaHelper.readjson()

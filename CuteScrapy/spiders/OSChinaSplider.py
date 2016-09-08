@@ -1,29 +1,37 @@
 # coding:utf8
-import random
 import re
 from scrapy.cmdline import execute
 from scrapy import Request
 from scrapy.spiders import CrawlSpider
 from CuteScrapy.items import CutescrapyItem
+from CuteScrapy.resource.ResourceHelper import ResourceHelper
 
 
-class DemoSplider(CrawlSpider):
-    name = 'oschina'
+class OsChinaSplider(CrawlSpider):
+    name = 'oschina.list'
 
     def __init__(self, *args, **kwargs):
-        super(DemoSplider, self).__init__(*args, **kwargs)
+        super(OsChinaSplider, self).__init__(*args, **kwargs)
+        self.site = 'oschina'
+        self.resourceHelper = ResourceHelper()
+        self.kindList = self.resourceHelper.loadJson('oschina_kinds.json')
 
     def start_requests(self):
-        array = range(1, 25)
-        while array:
-            i = random.choice(array)
-            array.remove(i)
+        for item in self.kindList:
+            page = 1
+            id = item.get('id')
+            title = item.get('title')
+            url = 'http://www.oschina.net/blog?type=%s&p=%s'
             yield Request(
-                "http://www.oschina.net/blog?type=0&p=%d" % (i), meta={'type': 'oschina.net'}, dont_filter=True
+                url % (id, page),
+                meta={'type': 'list', 'page': page, 'id': id, 'title': title, 'url': 'http://www.oschina.net/blog'},
+                dont_filter=True,
+                headers={
+                    'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
             )
 
     def parse(self, response):
-        if response.meta['type'] == 'oschina.net':
+        if response.meta['type'] == 'list':
             for item in self.parse_oschina(response):
                 yield item
         else:
@@ -31,17 +39,19 @@ class DemoSplider(CrawlSpider):
 
     def parse_oschina(self, response):
         contentlist = response.xpath('//*[@id="RecentBlogs"]/ul[1]/li')
+        self.logger.info(u'-----------[%s]第%s页,%d条数据-----------' % (
+            response.meta['title'], response.meta['page'], len(contentlist)))
         for item in contentlist:
             article_url = item.xpath('div/h3/a/@href').extract_first()
             article_title = item.xpath('div/h3/a/text()').extract_first()
-            brief = item.xpath('div/p/text()').extract_first()
+            brief = item.xpath('div/p/text()').extract_first().strip()
             dateline = item.xpath('div/div/text()').extract_first()
             blog_url = item.xpath('a/@href').extract_first()
             nick_name = dateline.split(' ')[2]
             dateline = dateline.split(' ')[0]
 
             item = CutescrapyItem()
-            item['site'] = response.meta['type']
+            item['site'] = self.site
             item['url'] = article_url
             item['title'] = article_title
             item['label'] = None
@@ -54,7 +64,20 @@ class DemoSplider(CrawlSpider):
             item['diggnum'] = None
             item['burynum'] = None
             yield item
+        # next_page = response.xpath('//*[@id="RecentBlogs"]/ul[@class="pager"]/li[@class="page next"]/a/@href').extract()
+        next_page = response.xpath('//li[@class="page next"]/a/@href').extract_first()
+        if next_page:
+            page = re.search('p=(\d+)', next_page).group(1)
+            url = response.meta['url']
+            yield Request(
+                url + next_page,
+                meta={'type': 'list', 'page': page, 'id': response.meta['id'], 'title': response.meta['title'],
+                      'url': url},
+                dont_filter=True,
+                headers={
+                    'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
+            )
 
 
 if __name__ == '__main__':
-    execute('scrapy crawl oschina'.split(' '))
+    execute('scrapy crawl oschina.list'.split(' '))
