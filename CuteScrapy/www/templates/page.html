@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>首页</title>
+    </head>
+    <body>
+        {% if name %}
+            <h1>Hello,{{ name }}!</h1>
+        {% else %}
+            <h1>Hello Stranger!</h1>
+        {% endif %}
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.name.label  }} {{ form.name() }}
+            {{ form.submit() }}
+        </form>
+    </body>
+</html>

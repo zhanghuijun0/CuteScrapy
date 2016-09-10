@@ -30,10 +30,16 @@ class Blogs(Base):
     date_create = Column(DateTime, default=datetime.now)
     date_update = Column(DateTime, default=datetime.now)
 
+    @classmethod
+    def getAll(cls):
+        session = ORM().getSession()
+        blogs = session.query(cls).order_by(Blogs.date_create.desc()).all()[0:10]
+        session.close()
+        return blogs
 
 if __name__ == '__main__':
     orm = ORM()
-    orm.initTable()
+    # orm.initTable()
     # 创建新User对象:
     # new_user = CheShangTong(nick_name='zhj', user_id='12')
     # orm.addData(new_user)

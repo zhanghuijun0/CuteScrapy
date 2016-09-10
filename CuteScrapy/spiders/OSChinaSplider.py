@@ -47,14 +47,14 @@ class OsChinaSplider(CrawlSpider):
             brief = item.xpath('div/p/text()').extract_first().strip()
             dateline = item.xpath('div/div/text()').extract_first()
             blog_url = item.xpath('a/@href').extract_first()
-            nick_name = dateline.split(' ')[2]
-            dateline = dateline.split(' ')[0]
+            dateline = dateline.split(' ')[2]
+            nick_name = dateline.split(' ')[0]
 
             item = CutescrapyItem()
             item['site'] = self.site
             item['url'] = article_url
             item['title'] = article_title
-            item['label'] = None
+            item['label'] = response.meta['title']
             item['brief'] = brief
             item['post_date'] = dateline
             item['blog'] = blog_url

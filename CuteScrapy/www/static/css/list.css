@@ -1,0 +1,62 @@
+*{
+    margin:0;
+    padding:0;
+}
+.row{
+    margin:0 auto;
+}
+.borderCCC{
+    border:1px solid #ccc;
+}
+.height{
+    height:100px;
+}
+.mR3{
+    margin-right:3%;
+}
+.mT3{
+    margin-top: 3%;
+}
+.mB3{
+    margin-bottom: 3%;
+}
+
+.bL{
+    border-left:1px solid #ccc;
+}
+.head{
+    padding:0;
+    width:120px;
+    height:230px;
+    text-align: center;
+}
+.headImg{
+    margin:30% 20px 0 20px;
+    /*margin-top: 30%;*/
+    /*margin-left: 20px;*/
+}
+.headImg img{
+    display: block;
+    width:80px;
+    height:80px;
+    border-radius: 50%;
+}
+
+.nickName{
+    width:80px;
+    height:40px;
+    line-height: 40px;
+    margin-left: 20px;
+    text-align: center;
+}
+.hiddenMore{
+    color:#888;
+
+    height:100px;
+    line-height: 20px;
+    white-space:nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    width:100%;
+}
