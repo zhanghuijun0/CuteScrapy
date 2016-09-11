@@ -2,65 +2,65 @@
 
 {% block scripts %}
 {{  super() }}
-    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap-3.3.7-dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename = 'css/list.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename = 'css/font-awesome-4.5.0/css/font-awesome.min.css') }}">
     <script type="text/javascript" src="{{ url_for('static',filename = 'js/jquery-1.11.2.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static',filename = 'bootstrap-3.3.7-dist/js/bootstrap.min.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 {% for item in data %}
-<div class="container">
-    <div class="row mT3 ">
-        <div class="col-lg-1 col-md-1   head">
-            <div class="row">
-                <div class="col-lg col-md">
-                    <div class="headImg">
-                        <img src="{{ url_for('static',filename = 'images/'+item.site+'.png') }}" />  <!--头像-->
+<div class="container" style="margin: 0 auto">
+    <div class="row">
+        <div class="col-lg-offset-1">
+            <div class="col-lg-1 col-md-1 head">
+                <div class="row">
+                    <div class="col-lg col-md col-sm col-xs">
+                        <div class="headImg">
+                            <img src="{{ url_for('static',filename = 'images/'+item.site+'.png') }}" />  <!--头像-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg col-md">
+                        <div class="nickName">{{item.author}}</div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg col-md">
-                    <div class="nickName">{{item.author}}</div>
+            <div class="col-lg-9 col-md-9 bL">
+                <div class="row">
+                    <div class="col-lg col-md col-sm col-xs">
+                        <h3>
+                            <a href={{item.url}}>{{item.title}}</a>
+                        </h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg col-md height hiddenMore">
+                        {{item.brief}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5><i class="fa fa-list-ul mR3"></i>{{item.label}}</h5>
+                    </div>
+                    <div class="col-md-2 col-md-offset-3">
+                        <h5>{{item.post_date}}</h5> <!--发表时间-->
+                    </div>
+                    <div class="col-md-2">
+                        <h5> <i class="fa fa-eye mR3"></i>{{item.pv}}</h5><!--浏览量-->
+                    </div>
+                    <div class="col-md-1">
+                        <h5><i class="fa fa-thumbs-o-up mR3"></i>0</h5><!--点赞量-->
+                    </div>
+                    <div class="col-md-1">
+                        <h5><i class="fa fa-thumbs-o-down mR3"></i>0</h5><!--点赞量-->
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-10 col-md-10 bL">
-            <div class="row">
-                <div class="col-lg col-md">
-                    <h3>
-                        <a href={{item.url}}>{{item.title}}</a>
-                    </h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg col-md height hiddenMore">
-                    {{item.brief}}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <h5><i class="fa fa-list-ul mR3"></i>{{item.label}}</h5>
-                </div>
-                <div class="col-md-2 col-md-offset-4">
-                    <h5>{{item.post_date}}</h5> <!--发表时间-->
-                </div>
-                <div class="col-md-1">
-                    <h5> <i class="fa fa-eye mR3"></i>{{item.pv}}</h5><!--浏览量-->
-                </div>
-                <div class="col-md-1">
-                    <h5><i class="fa fa-thumbs-o-up mR3"></i>0</h5><!--点赞量-->
-                </div>
-                <div class="col-md-1">
-                    <h5><i class="fa fa-thumbs-o-down mR3"></i>0</h5><!--点赞量-->
-                </div>
-            </div>
-        </div>
-
     </div>
     <hr>
 </div>
 {% endfor %}
+<!--<a href="">next</a>-->
 {% endblock %}

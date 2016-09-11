@@ -33,6 +33,19 @@ def home():
     data = blogs.getAll()
     return render_template('list.html',data = data)
 
+@app.route('/blogs',methods=['get'])
+def blogs():
+    blogs = Blogs()
+    page = request.args.get('page')
+    pagesize = request.args.get('pagesize')
+    print page
+    print pagesize
+    if page and type(page)==int:
+        data = blogs.getBlobsBySite(request.args.get('type'))
+
+    data = blogs.getBlobsBySite(request.args.get('type'))
+    return render_template('list.html',data = data)
+
 @app.route('/page.html',methods=['post','get'])
 def signin_form():
     name = None
@@ -58,3 +71,9 @@ def signin():
 
 if __name__ == '__main__':
     app.run()
+
+    # def aa(site, page=0, pagesize=50):
+    #     print site
+    #     print page
+    #     print pagesize
+    # aa("ss",pagesize=None)

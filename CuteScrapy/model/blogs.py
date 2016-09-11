@@ -37,8 +37,18 @@ class Blogs(Base):
         session.close()
         return blogs
 
+    @classmethod
+    def getBlobsBySite(cls, site, page=0, pagesize=50):
+        session = ORM().getSession()
+        blogs = session.query(cls).filter(Blogs.site == site).order_by(Blogs.date_create.desc()).all()[
+                page * pagesize:page * pagesize + pagesize]
+        session.close()
+        return blogs
+
+
 if __name__ == '__main__':
     orm = ORM()
+    Blogs().getBlobsBySite('csdn')
     # orm.initTable()
     # 创建新User对象:
     # new_user = CheShangTong(nick_name='zhj', user_id='12')

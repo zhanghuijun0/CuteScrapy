@@ -8,9 +8,6 @@
 .borderCCC{
     border:1px solid #ccc;
 }
-.height{
-    height:100px;
-}
 .mR3{
     margin-right:3%;
 }
@@ -27,13 +24,11 @@
 .head{
     padding:0;
     width:120px;
-    height:230px;
+    height:100px;
     text-align: center;
 }
 .headImg{
     margin:30% 20px 0 20px;
-    /*margin-top: 30%;*/
-    /*margin-left: 20px;*/
 }
 .headImg img{
     display: block;
