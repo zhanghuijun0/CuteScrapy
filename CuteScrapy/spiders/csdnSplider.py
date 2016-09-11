@@ -3,7 +3,7 @@ import re
 from scrapy.cmdline import execute
 from scrapy import Request
 from scrapy.spiders import CrawlSpider
-from CuteScrapy.items import CutescrapyItem
+from CuteScrapy.items import BlogsItem
 
 
 class CsdnSplider(CrawlSpider):
@@ -39,7 +39,7 @@ class CsdnSplider(CrawlSpider):
             nick_name = item.xpath('dt/a[2]/text()').extract_first()
             pv = item.xpath('dd/div[2]/div[2]/span/em/text()').extract_first()
 
-            item = CutescrapyItem()
+            item = BlogsItem()
             item['site'] = self.site
             item['url'] = article_url
             item['title'] = article_title

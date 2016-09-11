@@ -5,7 +5,7 @@ import datetime
 from scrapy.cmdline import execute
 from scrapy import Request
 from scrapy.spiders import CrawlSpider
-from CuteScrapy.items import CutescrapyItem
+from CuteScrapy.items import BlogsItem
 
 
 class BlogsSplider(CrawlSpider):
@@ -48,7 +48,7 @@ class BlogsSplider(CrawlSpider):
             pv = re.findall(r'\d+', pv)[0]
             num_reviews = re.findall(r'\d+', num_reviews)[0]
 
-            item = CutescrapyItem()
+            item = BlogsItem()
             item['site'] = self.site
             item['url'] = article_url
             item['title'] = article_title
