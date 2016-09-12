@@ -1,4 +1,5 @@
 # coding:utf8
+import os
 import random
 import re
 import datetime
@@ -8,6 +9,8 @@ import requests
 from scrapy.cmdline import execute
 from scrapy import Request
 from scrapy.spiders import CrawlSpider
+from scrapy.utils import project
+
 from CuteScrapy.items import MovieItem
 from CuteScrapy.util.DownloadHelper import Download
 
@@ -20,6 +23,8 @@ class MovieSplider(CrawlSpider):
         self.site = 'mp4ba'
         self.base = 'http://www.mp4ba.com/'
         self.download = Download()
+        self.settings = project.get_project_settings()  # get settings
+        self.configPath = self.settings.get("DOWNLOAD_DIR")
 
     def start_requests(self):
         yield Request(
@@ -68,9 +73,11 @@ class MovieSplider(CrawlSpider):
             url = item.xpath('a/@href').extract_first()
             if kinds == u'首页':
                 continue
+            path = u"%s%s/%s" % (self.configPath, self.site, kinds)
+            # os.makedirs(path)
             yield Request(
                 "http://www.mp4ba.com/%s" % url,
-                meta={'type': 'list', 'pageNo': 1},
+                meta={'type': 'list', 'pageNo': 1, 'download_path': path},
                 dont_filter=True,
                 headers={
                     'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
@@ -100,7 +107,7 @@ class MovieSplider(CrawlSpider):
                 print item.xpath('td[8]/a/text()').extract_first()
             yield Request(
                 movie['page_url'],
-                meta={'type': 'detail', 'movie': movie},
+                meta={'type': 'detail', 'movie': movie, 'download_path': response.meta['download_path']},
                 dont_filter=True,
                 headers={
                     'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
@@ -111,13 +118,14 @@ class MovieSplider(CrawlSpider):
             if next_page_no > pageNo:
                 yield Request(
                     "http://www.mp4ba.com/%s" % next_page[-1],
-                    meta={'type': 'list', 'pageNo': next_page_no},
+                    meta={'type': 'list', 'pageNo': next_page_no, 'download_path': response.meta['download_path']},
                     dont_filter=True,
                     headers={
                         'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
                 )
 
     def parse_detail(self, response):
+        path = response.meta['download_path']
         movie = response.meta['movie']
         datestr = response.xpath('//*[@class="basic_info"]/p[4]/text()').extract_first()
         publish_time_str = re.search('(\d{4}\/\d{2}\/\d{2} \d{2}\:\d{2}\:\d{2})', datestr).group(1)
@@ -130,8 +138,10 @@ class MovieSplider(CrawlSpider):
         movie['stars'] = None
         movie['e_dloaded'] = None
         movie['director'] = None
-
         yield movie
+        save = '%s/%s.torrent' % (path, movie['full_name'])
+        self.download.download(movie['download_url'], save)
+
 
 
 if __name__ == '__main__':
