@@ -1,20 +1,13 @@
 # coding:utf8
-import os
-import random
 import re
 import datetime
-import urllib
-import urllib2
-import requests
 from scrapy.cmdline import execute
 from scrapy import Request
 from scrapy.spiders import CrawlSpider
 from scrapy.utils import project
-
 from CuteScrapy.items import MovieItem
 from CuteScrapy.model.movies import Movies
 from CuteScrapy.util.DownloadHelper import Download
-from CuteScrapy.util.MysqlUtils import ORM
 
 
 class MovieSplider(CrawlSpider):
@@ -38,13 +31,6 @@ class MovieSplider(CrawlSpider):
             headers={
                 'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
         )
-        # yield Request(
-        #     "http://www.mp4ba.com/index.php?sort_id=8&page=4",
-        #     meta={'type': 'list', 'pageNo': 4},
-        #     dont_filter=True,
-        #     headers={
-        #         'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
-        # )
 
     def parse(self, response):
         if response.status == 200:
@@ -57,18 +43,6 @@ class MovieSplider(CrawlSpider):
             elif response.meta['type'] == 'detail':
                 for item in self.parse_detail(response):
                     yield item
-                    # kind = response.xpath('//*[@id="btm"]/div[4]/a/text()').extract()[-1]
-                    # fullname = response.xpath('//*[@id="btm"]/div[4]/text()').extract()[-1].replace('\n', '').replace('\r',
-                    #                                                                                                   '').replace(
-                    #     u'»', '').strip()
-                    # name = fullname.split('.')[0]
-                    # url = self.base + response.xpath('//*[@id="download"]/@href').extract_first()
-                    # # self.download.download(url,name)
-                    # print kind
-                    # print name
-                    # print fullname
-                    # print url
-                    # yield
 
     def parse_home(self, response):
         list = response.xpath('//*[@id="smenu"]/ul/li')
@@ -162,5 +136,3 @@ class MovieSplider(CrawlSpider):
 
 if __name__ == '__main__':
     execute('scrapy crawl movies.mp4ba'.split(' '))
-    # a=u' 第35届香港电影金像奖颁奖典礼.The.35th.Hong.Kong.Film.Awards.Presentation.Ceremony.HD1080P.X264.AAC.Cantonese.Mp4Ba'
-    # pass
