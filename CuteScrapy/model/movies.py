@@ -31,6 +31,12 @@ class Movies(Base):
     date_create = Column(DateTime, default=datetime.now)
     date_update = Column(DateTime, default=datetime.now)
 
+    @classmethod
+    def isExistsMoviesByid(cls, id):
+        session = ORM().getSession()
+        movies = session.query(cls).filter(Movies.id == id).first()
+        session.close()
+        return movies
 
 if __name__ == '__main__':
     orm = ORM()

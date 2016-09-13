@@ -12,7 +12,9 @@ from scrapy.spiders import CrawlSpider
 from scrapy.utils import project
 
 from CuteScrapy.items import MovieItem
+from CuteScrapy.model.movies import Movies
 from CuteScrapy.util.DownloadHelper import Download
+from CuteScrapy.util.MysqlUtils import ORM
 
 
 class MovieSplider(CrawlSpider):
@@ -25,6 +27,8 @@ class MovieSplider(CrawlSpider):
         self.download = Download()
         self.settings = project.get_project_settings()  # get settings
         self.configPath = self.settings.get("DOWNLOAD_DIR")
+        self.count = 0
+        self.blogs = Movies()
 
     def start_requests(self):
         yield Request(
@@ -89,8 +93,11 @@ class MovieSplider(CrawlSpider):
         if len(list) == 1 and response.xpath('//*[@id="data_list"]/tr/td/text()').extract_first() == u'没有可显示资源':
             self.logger.info('---%s,%s---' % (response.url, u'没有数据'))
             return
+            yield None
         self.logger.info('---pageNo:%s,%s---' % (pageNo, response.url))
+        record_not_exist = True
         for item in list:
+            # record_not_exist = True
             if len(item.xpath('td')) == 1:
                 continue
             movie = MovieItem()
@@ -105,15 +112,23 @@ class MovieSplider(CrawlSpider):
 
             if item.xpath('td[8]/a/text()').extract_first() != u'高清MP4吧':
                 print item.xpath('td[8]/a/text()').extract_first()
-            yield Request(
-                movie['page_url'],
-                meta={'type': 'detail', 'movie': movie, 'download_path': response.meta['download_path']},
-                dont_filter=True,
-                headers={
-                    'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
-            )
+            if self.blogs.isExistsMoviesByid(movie['id']):
+                self.logger.info(
+                    '*****************type:%s,pageNo:%s,record exist! crawl total count:%s,title%s*****************' % (
+                        movie['type'], pageNo, self.count, movie['full_name']))
+                record_not_exist = False
+                continue
+            else:
+                self.logger.info('------lastest file,type:%s,title%s-------' % (movie['type'], movie['full_name']))
+                yield Request(
+                    movie['page_url'],
+                    meta={'type': 'detail', 'movie': movie, 'download_path': response.meta['download_path']},
+                    dont_filter=True,
+                    headers={
+                        'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
+                )
         next_page = response.xpath('//*[@class="pages clear"]/a[@class="nextprev"]/@href').extract()
-        if next_page:
+        if next_page and record_not_exist:
             next_page_no = int(re.search('page=(\d+)', next_page[-1]).group(1))
             if next_page_no > pageNo:
                 yield Request(
@@ -140,8 +155,9 @@ class MovieSplider(CrawlSpider):
         movie['director'] = None
         yield movie
         save = '%s/%s.torrent' % (path, movie['full_name'])
+        self.count += 1
+        self.logger.info('********Crawl No:%s********' % (self.count))
         self.download.download(movie['download_url'], save)
-
 
 
 if __name__ == '__main__':
