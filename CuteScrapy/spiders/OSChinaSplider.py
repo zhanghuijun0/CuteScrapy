@@ -44,7 +44,7 @@ class OsChinaSplider(CrawlSpider):
         for item in contentlist:
             article_url = item.xpath('div/h3/a/@href').extract_first()
             article_title = item.xpath('div/h3/a/text()').extract_first()
-            brief = item.xpath('div/p/text()').extract_first().strip()
+            brief = item.xpath('div/p/text()').extract_first()
             dateline = item.xpath('div/div/text()').extract_first()
             blog_url = item.xpath('a/@href').extract_first()
             nick_name = dateline.split(' ')[0]
@@ -56,7 +56,7 @@ class OsChinaSplider(CrawlSpider):
             item['url'] = article_url
             item['title'] = article_title
             item['label'] = response.meta['title']
-            item['brief'] = brief
+            item['brief'] = brief.strip() if brief is not None else None
             item['post_date'] = dateline
             item['blog'] = blog_url
             item['author'] = nick_name

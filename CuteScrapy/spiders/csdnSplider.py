@@ -32,7 +32,7 @@ class CsdnSplider(CrawlSpider):
         for item in contentlist:
             article_url = item.xpath('dd/h3/a/@href').extract_first()
             article_title = item.xpath('dd/h3/a/text()').extract_first()
-            brief = item.xpath('dd/div[1]/text()').extract_first().strip()
+            brief = item.xpath('dd/div[1]/text()').extract_first()
             dateline = item.xpath('dd/div[2]/div[2]/label/text()').extract_first()
             label = item.xpath('dd/div[2]/div[1]/span/a/text()').extract_first()
             blog_url = item.xpath('dt/a[2]/@href').extract_first()
@@ -44,7 +44,7 @@ class CsdnSplider(CrawlSpider):
             item['url'] = article_url
             item['title'] = article_title
             item['label'] = label
-            item['brief'] = brief
+            item['brief'] = brief.strip() if brief is not None else None
             item['post_date'] = dateline
             item['blog'] = blog_url
             item['author'] = nick_name
