@@ -16,7 +16,11 @@ class CsdnSplider(CrawlSpider):
 
     def start_requests(self):
         yield Request(
-            "http://blog.csdn.net/?&page=1", meta={'type': 'list', 'page': 1}, dont_filter=True
+            "http://blog.csdn.net/?&page=1",
+            meta={'type': 'list', 'page': 1},
+            dont_filter=True,
+            headers={
+                'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
         )
 
     def parse(self, response):
@@ -58,7 +62,11 @@ class CsdnSplider(CrawlSpider):
             pageNo = re.search('(\d+)', next_url).group(1)
             url = self.url + next_url
             yield Request(
-                url, meta={'type': 'list', 'page': pageNo}, dont_filter=True
+                url,
+                meta={'type': 'list', 'page': pageNo},
+                dont_filter=True,
+                headers={
+                    'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
             )
         else:
             self.logger.info(u'----------CSDN最新博客,一共有%s页----------' % (response.meta['page']))

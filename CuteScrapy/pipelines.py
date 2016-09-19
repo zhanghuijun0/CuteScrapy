@@ -18,7 +18,7 @@ class CutescrapyPipeline(object):
         self.orm = ORM()
 
     def process_item(self, item, spider):
-        if spider.name == 'movies.mp4ba':
+        if spider.name == 'movies.mp4ba' or spider.name == 'movies.dyxz5':
             movie = Movies()
             now = datetime.datetime.now()
             movie.id = item['id']
