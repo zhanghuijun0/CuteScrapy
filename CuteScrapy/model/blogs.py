@@ -45,10 +45,17 @@ class Blogs(Base):
         session.close()
         return blogs
 
+    @classmethod
+    def isExistsBlogsByid(cls, id):
+        session = ORM().getSession()
+        movies = session.query(cls).filter(Blogs.id == id).first()
+        session.close()
+        return movies
+
 
 if __name__ == '__main__':
     orm = ORM()
-    Blogs().getBlobsBySite('csdn')
+    # Blogs().getBlobsBySite('csdn')
     # orm.initTable()
     # 创建新User对象:
     # new_user = CheShangTong(nick_name='zhj', user_id='12')

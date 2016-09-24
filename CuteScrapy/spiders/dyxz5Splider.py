@@ -49,6 +49,7 @@ class DyxzwSplider(CrawlSpider):
         current_page_no = response.meta['pageNo']
         self.logger.info('========Crawl Page No:%s========' % (current_page_no))
         list = response.xpath('//*[@id="content"]/div[@class="main"]/ul/li')
+        record_not_exist = True
         for item in list:
             try:
                 movie = MovieItem()
@@ -56,13 +57,13 @@ class DyxzwSplider(CrawlSpider):
                 movie['page_url'] = item.xpath('div/h2/a/@href').extract_first()
                 u_id = re.search('\/(\d+)', movie['page_url']).group(1)
                 movie['id'] = '%s_%s' % (self.site, u_id)
+
                 movie['full_name'] = item.xpath('div/h2/a/text()').extract_first().replace('\r\n', '').strip()
-                print movie['full_name']
                 try:
-                    name = movie['full_name'].split(u'[BT下载]')[1].replace('[','').split(u']')
+                    name = movie['full_name'].split(u'[BT下载]')[1].replace('[', '').split(u']')
                     movie['name'] = name[0]
                 except:
-                    print movie['full_name']
+                    # print movie['full_name']
                     movie['name'] = None
 
                 movie['type'] = None
@@ -85,18 +86,26 @@ class DyxzwSplider(CrawlSpider):
 
                 info = item.xpath('div/div[@class="info"]/text()').extract()
                 for pv in info:
-                    if pv.find(u'阅读')>-1:
+                    if pv.find(u'阅读') > -1:
                         movie['e_dloaded'] = int(re.search('(\d+)', pv).group(1))
                         break
+                if self.blogs.isExistsMoviesByid(movie['id']):
+                    self.logger.info(
+                        '*****************pageNo:%s,record exist! crawl total count:%s,title%s' % (
+                            current_page_no, self.count, movie['full_name']))
+                    record_not_exist = False
+                    continue
+                else:
+                    self.count += 1
+                    self.logger.info('----------Crawl No:%s,%s----------' % (self.count, movie['full_name']))
+                    record_not_exist = True
                 yield movie
-                self.count += 1
-                self.logger.info('********Crawl No:%s********' % (self.count))
             except Exception, e:
                 traceback.print_exc()
                 self.logger.error(str(e))
         next_page = response.xpath('//*[@id="pagenavi"]/a/@href').extract()[-1]
         next_page_no = int(response.xpath('//*[@id="pagenavi"]/a/@href').extract()[-1].split('/')[-1])
-        if next_page_no > current_page_no:
+        if next_page_no > current_page_no and record_not_exist:
             yield Request(
                 next_page,
                 meta={'type': 'list', 'pageNo': next_page_no},
@@ -105,7 +114,7 @@ class DyxzwSplider(CrawlSpider):
                     'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"}
             )
         else:
-            self.logger.info('------没有了,一共%s页-------' % (current_page_no))
+            self.logger.info('----------没有了,一共%s页----------' % (current_page_no))
         yield
 
     def parse_detail(self, response):
