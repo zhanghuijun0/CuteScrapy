@@ -5,6 +5,7 @@ from CuteScrapy.util.MysqlUtils import ORM
 from sqlalchemy import Column, String, FLOAT, INTEGER, ForeignKey, DateTime, BOOLEAN, TEXT, UniqueConstraint, Index, \
     TIMESTAMP
 from datetime import datetime
+from sqlalchemy import func
 
 Base = ORM.getBase()
 
@@ -24,6 +25,7 @@ class Blogs(Base):
     author = Column(String(100))  # 用户昵称
     pv = Column(INTEGER)  # 浏览量
     num_reviews = Column(INTEGER)  # 评论数量
+    content = Column(TEXT)  # 内容
     diggnum = Column(INTEGER)  # 推荐数量
     burynum = Column(INTEGER)  # 踩的数量
 
@@ -44,6 +46,32 @@ class Blogs(Base):
                 page * pagesize:page * pagesize + pagesize]
         session.close()
         return blogs
+
+    @classmethod
+    def getCountBySite(cls, site):
+        session = ORM().getSession()
+        blogs = session.query(func.count(cls.url).label('count')).filter(Blogs.site == site).first()
+        session.close()
+        return blogs.count
+
+    def to_dict(self):
+        return {
+            'site': self.site,
+            'url': self.url,
+            'title': self.title,
+            'label': self.label,
+            'brief': self.brief,
+            'post_date': self.post_date,
+            'blog': self.blog,
+            'author': self.author,
+            'pv': self.pv,
+            'num_reviews': self.num_reviews,
+            'diggnum': self.diggnum,
+            'burynum': self.burynum,
+            'content': self.content,
+            'date_create': self.date_create.strftime('%Y-%m-%d %H:%M:%S'),
+            'date_update': self.date_update.strftime('%Y-%m-%d %H:%M:%S')
+        }
 
     @classmethod
     def isExistsBlogsByid(cls, id):

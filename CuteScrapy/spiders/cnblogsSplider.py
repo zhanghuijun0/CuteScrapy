@@ -47,7 +47,7 @@ class BlogsSplider(CrawlSpider):
             dateline = re.findall(r'\d+-\d+-\d+\s*\d+\:\d+', dateline)[0]
             pv = re.findall(r'\d+', pv)[0]
             num_reviews = re.findall(r'\d+', num_reviews)[0]
-
+            self.logger.info('title:'+article_title)
             item = BlogsItem()
             item['site'] = self.site
             item['url'] = article_url

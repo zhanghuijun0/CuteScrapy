@@ -87,9 +87,9 @@ class MovieSplider(CrawlSpider):
             if item.xpath('td[8]/a/text()').extract_first() != u'高清MP4吧':
                 print item.xpath('td[8]/a/text()').extract_first()
             if self.blogs.isExistsMoviesByid(movie['id']):
-                self.logger.info(
-                    '*****************type:%s,pageNo:%s,record exist! crawl total count:%s,title%s*****************' % (
-                        movie['type'], pageNo, self.count, movie['full_name']))
+                # self.logger.info(
+                #     '*****************type:%s,pageNo:%s,record exist! crawl total count:%s,title%s*****************' % (
+                #         movie['type'], pageNo, self.count, movie['full_name']))
                 record_not_exist = False
                 continue
             else:

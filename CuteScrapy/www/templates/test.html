@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>basic-columns</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
+    <script src="http://code.jquery.com/jquery-2.1.0.js"></script>
+    <script src="http://issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script src="http://issues.wenzhixin.net.cn/bootstrap-table/ga.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <h1>Basic Columns</h1>
+    <p>Use <code>showColumns</code>, <code>minimumCountColumns</code> options, and <code>visible</code>, <code>switchable</code>
+        column options to show the columns menu list use to switch.</p>
+    <table id="table"></table>
+</div>
+
+<script>
+    $('#table').bootstrapTable({
+        url: 'http://0.0.0.0:8000/api?site=csdn&page=1&pagesize=60',
+        classes: 'table table-no-bordered',
+        sortable: true, //是否启用排序
+        pagination: true, //分页
+        search: true, //显示搜索框
+        pageSize: 30,
+        idField:'site',
+        showRefresh: true,
+        minimumCountColumns:1,
+        striped: true,
+        sortName: "label",//排序字段
+        sortOrder: "desc",//排序
+        showColumns: true,//是否显示 内容列下拉框
+        columns: [{
+            field: 'site',
+            title: 'site'
+        }, {
+            field: 'title',
+            title: 'title'
+        }, {
+            field: 'url',
+            visible:false,
+            title: 'url'
+        }, {
+            field: 'pv',
+            title: 'pv',
+            sortable: true
+        }, {
+            field: 'label',
+            title: 'label',
+            visible:false
+        }]
+    });
+</script>
+</body>
+</html>

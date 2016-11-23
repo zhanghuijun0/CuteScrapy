@@ -49,8 +49,7 @@ class OsChinaSplider(CrawlSpider):
             blog_url = item.xpath('a/@href').extract_first()
             nick_name = dateline.split(' ')[0]
             dateline = dateline.split(' ')[2]
-
-
+            self.logger.info('title:' + article_title)
             item = BlogsItem()
             item['site'] = self.site
             item['url'] = article_url

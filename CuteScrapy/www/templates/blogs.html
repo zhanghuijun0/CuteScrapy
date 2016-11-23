@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+{{  super() }}
+
+
+<link rel="stylesheet" href="http://issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
+
+
+<script src="http://issues.wenzhixin.net.cn/bootstrap-table/assets/jquery.min.js"></script>
+<script type="text/javascript" src="http://issues.wenzhixin.net.cn/bootstrap-table/assets/bootstrap/js/bootstrap.min.js"></script>
+
+<script type="text/javascript"
+        src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="http://issues.wenzhixin.net.cn/bootstrap-table/ga.js"></script>
+
+
+<script>
+    $('#table').bootstrapTable({
+        url: 'http://192.168.3.3:8000/api?site=csdn&page=1&pagesize=60',
+//        classes: 'table table-no-bordered',
+//        sortable: true, //是否启用排序
+//        pagination: true, //分页
+//        search: true, //显示搜索框
+//        pageSize: 30,
+//        idField:'site',
+//        showRefresh: true,
+        minimumCountColumns:1,
+//        striped: true,
+//        sortName: "label",//排序字段
+//        sortOrder: "desc",//排序
+        showColumns: true,//是否显示 内容列下拉框
+        columns: [{
+            field: 'site',
+            title: 'site'
+        }, {
+            field: 'title',
+            title: 'title'
+        }, {
+            field: 'url',
+            visible:false,
+            title: 'url'
+        }, {
+            field: 'pv',
+            title: 'pv',
+            sortable: true
+        }, {
+            field: 'label',
+            title: 'label',
+            visible:false
+        }]
+    });
+</script>
+
+{% endblock %}
+
+{% block content %}
+<!--<table data-toggle="table"
+       data-url="http://0.0.0.0:8000/api?site=csdn&page=1&pagesize=100" data-striped="true" data-page-size="3">
+    <thead>
+    <tr>
+        <th data-field="site" data-sortable="true">site</th>
+        <th data-field="title" data-sortable="true">title</th>
+        <th data-field="author" data-sortable="true">author</th>
+        <th data-field="label" data-sortable="true">label</th>
+        <th data-field="pv" data-sortable="true">pv</th>
+        <th data-field="url" data-sortable="true" href=url>url</th>
+    </tr>
+    </thead>
+</table>-->
+<table id="table"></table>
+
+
+
+
+
+{% endblock %}
