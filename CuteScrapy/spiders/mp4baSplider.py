@@ -16,7 +16,7 @@ class MovieSplider(CrawlSpider):
     def __init__(self, *args, **kwargs):
         super(MovieSplider, self).__init__(*args, **kwargs)
         self.site = 'mp4ba'
-        self.base = 'http://www.mp4ba.com/'
+        self.base = 'http://www.mp4ba.net/'
         self.download = Download()
         self.settings = project.get_project_settings()  # get settings
         self.configPath = self.settings.get("DOWNLOAD_DIR")
@@ -25,7 +25,7 @@ class MovieSplider(CrawlSpider):
 
     def start_requests(self):
         yield Request(
-            "http://www.mp4ba.com",
+            "http://www.mp4ba.net",
             meta={'type': 'home'},
             dont_filter=True,
             headers={
@@ -45,7 +45,7 @@ class MovieSplider(CrawlSpider):
                     yield item
 
     def parse_home(self, response):
-        list = response.xpath('//*[@id="smenu"]/ul/li')
+        list = response.xpath('//*[@class="nav"]/ul/li')
         for item in list:
             kinds = item.xpath('a/text()').extract_first()
             url = item.xpath('a/@href').extract_first()
@@ -67,7 +67,6 @@ class MovieSplider(CrawlSpider):
         if len(list) == 1 and response.xpath('//*[@id="data_list"]/tr/td/text()').extract_first() == u'没有可显示资源':
             self.logger.info('---%s,%s---' % (response.url, u'没有数据'))
             return
-            yield None
         self.logger.info('---pageNo:%s,%s---' % (pageNo, response.url))
         record_not_exist = True
         for item in list:

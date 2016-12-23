@@ -1,65 +1,38 @@
-def test_args_kwargs(arg1, arg2, arg3):
-    print "arg1:", arg1
-    print "arg2:", arg2
-    print "arg3:", arg3
+# coding:utf8
+import os
+
+import re
 
 
-import pdb
-def make_bread():
-    pdb.set_trace()
-    return "I don't have time"
+class Scan():
+    def __init__(self):
+        pass
 
 
-def generator_function():
-    for i in range(10):
-        yield i
-        print 'item:%s' % i
-# for item in generator_function():
-#     print(item)
+    def scanFile(self,output):
+        smaliList = []
+        for parent, dirnames, filenames in os.walk(output):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
+            for filename in filenames:  # 输出文件信息
+                smaliList.append(os.path.join(parent, filename))
+        return smaliList
 
+    def checkIP(self,list):
+        for _file in list:
+            data = self.getDataFromFile(_file)
+            # result = re.search('\d+\.\d+\.\d+\.\d+',data)
+            result = re.search('port',data)
+            if result != None:
+                print _file
 
+    def getDataFromFile(self, path):
+        with open(path, 'r') as f:
+            data = f.read()
+            f.close()
+        return data
 
+    def run(self):
+        list = self.scanFile('/Users/huijunzhang/Documents/58cheshangtong/58cheshangtong/air/com/wuba/cardealertong')
+        self.checkIP(list)
 
-def fibon1(n):
-    a = b = 1
-    result = []
-    for i in range(n):
-        result.append(a)
-        a, b = b, a + b
-    return result
-
-
-# for i in fibon1(10000):
-#     print i
-
-
-# generator version
-def fibon(n):
-    a = b = 1
-    for i in range(n):
-        yield a
-        a, b = b, a + b
-# for x in fibon(100000000):
-#     print 1
-
-from functools import wraps
-
-def logit(func):
-    @wraps(func)
-    def with_logging(*args, **kwargs):
-        print(func.__name__ + " was called")
-        return func(*args, **kwargs)
-    return with_logging
-
-@logit
-def addition_func1(x):
-   """Do some math."""
-   return x + x
-
-
-# result = addition_func1(4)
-# print result
-
-
-
-
+if __name__ == '__main__':
+    Scan().run()
