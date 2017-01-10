@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = 'CuteScrapy.spiders'
 RESOURCE_DIR = "/Users/huijunzhang/PycharmProjects/CuteScrapy/CuteScrapy/resource"
 
 DOWNLOAD_DIR = u"/Users/huijunzhang/百度云同步盘/zhj-mac/download/"
-SCRAPY_MYSQL_URL = 'mysql+mysqlconnector://root:@localhost:3306/crawl'
+SCRAPY_MYSQL_URL = 'mysql+mysqlconnector://root:@localhost:3306/crawl?charset=utf8mb4'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'CuteScrapy (+http://www.yourdomain.com)'

@@ -1,18 +1,16 @@
 # coding:utf8
 import hashlib
-import random
 import re
 import datetime
 from scrapy.cmdline import execute
 from scrapy import Request
 from scrapy.spiders import CrawlSpider
-
 from CuteScrapy.item.ModelItem import ModelItem
-from CuteScrapy.items import BlogsItem
 from CuteScrapy.model.blogs import Blogs
 from CuteScrapy.util.CommonParser import CommonParser
 from CuteScrapy.util.date import parseDateString
 
+__author__ = 'HuijunZhang'
 
 class BlogsSplider(CrawlSpider):
     name = 'blogs.cnblogs.list'
@@ -82,6 +80,7 @@ class BlogsSplider(CrawlSpider):
             blogs.publish_time = parseDateString(dateStr)
             blogs.date_update = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             yield ModelItem.getInstance(blogs)
+
 
 
 if __name__ == '__main__':
