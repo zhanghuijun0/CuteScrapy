@@ -114,59 +114,40 @@ class Blogs(Base):
         session.close()
         return tag
 
-        # @classmethod
-        # def getAll(cls):
-        #     session = ORM().getSession()
-        #     blogs = session.query(cls).order_by(Blogs.date_create.desc()).all()[0:10]
-        #     session.close()
-        #     return blogs
-        #
-        # @classmethod
-        # def getBlobsBySite(cls, site, page=0, pagesize=50):
-        #     session = ORM().getSession()
-        #     blogs = session.query(cls).filter(Blogs.site == site).order_by(Blogs.date_create.desc()).all()[
-        #             page * pagesize:page * pagesize + pagesize]
-        #     session.close()
-        #     return blogs
-        #
-        # @classmethod
-        # def getCountBySite(cls, site):
-        #     session = ORM().getSession()
-        #     blogs = session.query(func.count(cls.url).label('count')).filter(Blogs.site == site).first()
-        #     session.close()
-        #     return blogs.count
-        #
-        # def to_dict(self):
-        #     return {
-        #         'site': self.site,
-        #         'url': self.url,
-        #         'title': self.title,
-        #         'label': self.label,
-        #         'brief': self.brief,
-        #         'post_date': self.post_date,
-        #         'blog': self.blog,
-        #         'author': self.author,
-        #         'pv': self.pv,
-        #         'num_reviews': self.num_reviews,
-        #         'diggnum': self.diggnum,
-        #         'burynum': self.burynum,
-        #         'content': self.content,
-        #         'date_create': self.date_create.strftime('%Y-%m-%d %H:%M:%S'),
-        #         'date_update': self.date_update.strftime('%Y-%m-%d %H:%M:%S')
-        #     }
-        #
-        # @classmethod
-        # def isExistsBlogsByid(cls, id):
-        #     session = ORM().getSession()
-        #     movies = session.query(cls).filter(Blogs.id == id).first()
-        #     session.close()
-        #     return movies
+    @classmethod
+    def getBlogs(cls):
+        session = orm.getSession()
+        blogs = session.query(cls).order_by(cls.publish_time.desc()).all()[1:10]
+        session.close()
+        result = []
+        for item in blogs:
+            result.append(item.to_dict())
+        return result
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'site': self.site,
+            'title': self.title,
+            'label': self.label,
+            'author': self.author,
+            'summary': self.summary,
+            'content': self.content,
+            'avatar': self.avatar,
+            'page_url': self.page_url,
+            'blog_url': self.blog_url,
+            'pv': self.pv,
+            'uv': self.uv,
+            'cv': self.cv,
+            'positive': self.positive,
+            'negative': self.negative,
+            'publish_time': self.publish_time.strftime('%Y-%m-%d %H:%M:%S'),
+            'date_create': self.date_create.strftime('%Y-%m-%d %H:%M:%S'),
+            'date_update': self.date_update.strftime('%Y-%m-%d %H:%M:%S')
+        }
 
 
 if __name__ == '__main__':
     orm = ORM()
-    # Blogs().getBlobsBySite('csdn')
     # orm.initTable()
-    # 创建新User对象:
-    # new_user = CheShangTong(nick_name='zhj', user_id='12')
-    # orm.addData(new_user)
+    # Blogs().getBlogs()

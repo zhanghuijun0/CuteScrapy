@@ -18,7 +18,11 @@ class CsdnSplider(CrawlSpider):
     custom_settings = {
         'RETRY_TIMES': 50,
         'ITEM_PIPELINES': {
-            'CuteScrapy.pipelines.MysqlORMPipeline': 300,
+            'CuteScrapy.pipelines.MysqlORMPipeline': 300
+        },
+        'DOWNLOADER_MIDDLEWARES':{
+            # 'CuteScrapy.middlewares.RandomProxyMiddleware': 800,
+            'CuteScrapy.middlewares.UserAgentMiddleware': 600
         },
         'DOWNLOAD_TIMEOUT': 120,
         'CONCURRENT_REQUESTS': 5,
@@ -53,7 +57,7 @@ class CsdnSplider(CrawlSpider):
             id = hashlib.md5(page_url).hexdigest()
             title = item.xpath('dd/h3/a/text()').extract_first()
             if self.blogs.isExistById(id):
-                self.logger.info('title:%s is exist!' % title)
+                self.logger.info('id:%s is exist!' % id)
                 continue
             summary = item.xpath('dd/div[@class="blog_list_c"]/text()').extract_first()
             dateStr = item.xpath(

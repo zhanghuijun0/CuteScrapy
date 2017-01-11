@@ -115,3 +115,12 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+
+MAIL_HOST = ''
+MAIL_FROM = ''
+MAIL_USER = ''
+MAIL_PASS = ''
+MAIL_PORT = 25
+MAIL_TLS = True
+MAIL_SSL = True

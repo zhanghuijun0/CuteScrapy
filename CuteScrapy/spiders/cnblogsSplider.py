@@ -18,6 +18,7 @@ class BlogsSplider(CrawlSpider):
         'RETRY_TIMES': 50,
         'ITEM_PIPELINES': {
             'CuteScrapy.pipelines.MysqlORMPipeline': 300,
+            # 'CuteScrapy.pipelines.JsonWriterPipeline': 350,
         },
         'DOWNLOAD_TIMEOUT': 120,
         'CONCURRENT_REQUESTS': 5,
@@ -50,7 +51,7 @@ class BlogsSplider(CrawlSpider):
             id = hashlib.md5(page_url).hexdigest()
             title = item.xpath('div[@class="post_item_body"]/h3/a/text()').extract_first()
             if self.blogs.isExistById(id):
-                self.logger.info('title:%s is exist!' % title)
+                self.logger.info('id:%s is exist!' % id)
                 continue
             author = item.xpath('div/div[@class="post_item_foot"]/a/text()').extract_first()
             avatar = item.xpath('div[@class="post_item_body"]/p/a/img/@src').extract_first()
