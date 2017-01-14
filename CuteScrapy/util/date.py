@@ -36,6 +36,14 @@ def parseDateString(dateStr):
         time = dateStr
     return time
 
+def timestamp2datetime(timestamp, convert_to_local=True):
+    ''' Converts UNIX timestamp to a datetime object. '''
+    if isinstance(timestamp, (int, long, float)):
+        dt = datetime.datetime.utcfromtimestamp(timestamp)
+        if convert_to_local:  # 是否转化为本地时间
+            dt = dt + datetime.timedelta(hours=8)  # 中国默认时区
+        return dt
+    return timestamp
 
 if __name__ == '__main__':
     print parseDateString(u'发布于 2017-01-10 18:10')
@@ -44,3 +52,4 @@ if __name__ == '__main__':
     print parseDateString(u'前天 14:30')
     print parseDateString(u'6天前 10:27')
     print parseDateString(u'12分钟前')
+    print timestamp2datetime(1484257158)

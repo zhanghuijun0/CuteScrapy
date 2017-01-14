@@ -1,11 +1,9 @@
 # coding:utf8
-from sqlalchemy.orm import relationship, backref
-
 from CuteScrapy.util.MysqlUtils import ORM
 from sqlalchemy import Column, String, FLOAT, INTEGER, ForeignKey, DateTime, BOOLEAN, TEXT, UniqueConstraint, Index, \
     TIMESTAMP
 from datetime import datetime
-from sqlalchemy import func
+
 
 Base = ORM.getBase()
 orm = ORM()

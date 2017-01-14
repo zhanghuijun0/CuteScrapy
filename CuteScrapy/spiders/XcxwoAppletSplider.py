@@ -1,19 +1,15 @@
 # coding:utf8
-import hashlib
-import re
-import datetime
 from scrapy.cmdline import execute
 from scrapy import Request, FormRequest
 from scrapy.spiders import CrawlSpider
 from CuteScrapy.item.ModelItem import ModelItem
 from CuteScrapy.model.applet import Applet
-from CuteScrapy.model.blogs import Blogs
 from CuteScrapy.util.CommonParser import CommonParser
-from CuteScrapy.util.date import parseDateString
 
 __author__ = 'HuijunZhang'
 
 
+# 微信小程序爬取(小程序窝)
 class XcxwoSplider(CrawlSpider):
     name = 'applet.xcxwo'
     custom_settings = {
@@ -47,7 +43,6 @@ class XcxwoSplider(CrawlSpider):
             meta={'type': 'list', 'page_no': 1},
             dont_filter=True
         )
-
 
     def parse(self, response):
         if not response.body_as_unicode():
@@ -93,6 +88,7 @@ class XcxwoSplider(CrawlSpider):
                     dont_filter=True
                 )
             else:
+                self.logger.info('id:%s is exists' % id)
                 yield ModelItem.getInstance(applet)
         yield FormRequest(
             "http://www.xcxwo.com/app/appList",
