@@ -1,4 +1,6 @@
 # coding:utf8
+import hashlib
+
 from scrapy.cmdline import execute
 from scrapy import Request, FormRequest
 from scrapy.spiders import CrawlSpider
@@ -58,10 +60,11 @@ class XcxwoSplider(CrawlSpider):
     def parse_list(self, response):
         for item in response.xpath('//body/div/a'):
             url = item.xpath('@href').extract_first()
-            id = url.split('/')[-1]
+            # id = url.split('/')[-1]
             icon = item.xpath('div[@class="header"]/img/@src').extract_first()
             name = item.xpath('div[@class="header"]/div[@class="title left"]/h1/text()').extract_first()
-            author = item.xpath('div[@class="header"]/div[@class="title left"]/p/text()').extract_first()
+            author = self.commonParser.trim(item.xpath('div[@class="header"]/div[@class="title left"]/p/text()').extract_first().replace(u'发布者：',''))
+            id = hashlib.md5((u'%s%s%s' % (self.site, name, author)).encode("utf8")).hexdigest()
             label = ','.join(item.xpath('div[@class="cate"]/span/text()').extract())
             star = len(item.xpath(
                 'div[@class="i-footer"]/div[@class="stars left"]/i[@class="fa fa-star star-active"]').extract())

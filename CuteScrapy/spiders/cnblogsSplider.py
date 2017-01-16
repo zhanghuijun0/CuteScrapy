@@ -32,7 +32,7 @@ class BlogsSplider(CrawlSpider):
         self.site = 'cnblogs'
 
     def start_requests(self):
-        for i in range(200, 0, -1):
+        for i in range(1,20):
             yield Request(
                 "http://www.cnblogs.com/sitehome/p/%d" % (i),
                 meta={'type': 'list'},
