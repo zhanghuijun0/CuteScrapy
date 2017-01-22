@@ -9,7 +9,7 @@ from CuteScrapy.resource.ResourceHelper import ResourceHelper
 
 
 class OsChinaSplider(CrawlSpider):
-    name = 'oschina.list'
+    name = 'blogs.oschina'
 
     def __init__(self, *args, **kwargs):
         super(OsChinaSplider, self).__init__(*args, **kwargs)
@@ -78,4 +78,4 @@ class OsChinaSplider(CrawlSpider):
 
 
 if __name__ == '__main__':
-    execute('scrapy crawl oschina.list'.split(' '))
+    execute('scrapy crawl blogs.oschina'.split(' '))

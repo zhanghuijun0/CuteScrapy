@@ -14,7 +14,7 @@ __author__ = 'HuijunZhang'
 
 
 class CsdnSplider(CrawlSpider):
-    name = 'blogs.csdn.list'
+    name = 'blogs.csdn'
     custom_settings = {
         'RETRY_TIMES': 50,
         'ITEM_PIPELINES': {
@@ -102,4 +102,4 @@ class CsdnSplider(CrawlSpider):
 
 
 if __name__ == '__main__':
-    execute('scrapy crawl blogs.csdn.list'.split(' '))
+    execute('scrapy crawl blogs.csdn'.split(' '))

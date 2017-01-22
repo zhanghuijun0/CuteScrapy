@@ -5,13 +5,14 @@ from sqlalchemy import Column, String, FLOAT, INTEGER, ForeignKey, DateTime, BOO
     TIMESTAMP
 from datetime import datetime
 
+__author__ = 'HuijunZhang'
+
 Base = ORM.getBase()
 orm = ORM()
 
 
 class Proxy(Base):
     __tablename__ = 'proxy'
-
     id = Column(String(100), primary_key=True)
     site = Column(String(100))  # 站点
     ip = Column(String(100))  # ip

@@ -6,13 +6,14 @@ from sqlalchemy import Column, String, FLOAT, INTEGER, ForeignKey, DateTime, BOO
     TIMESTAMP
 from datetime import datetime
 
+__author__ = 'HuijunZhang'
+
 Base = ORM.getBase()
 
 
 class Movies(Base):
-    __tablename__ = 'movies_list'
+    __tablename__ = 'movies'
     # __table_args__ = (UniqueConstraint('article_url','dateline', name='uidx_ids'),)
-    #
     id = Column(String(100), primary_key=True)
     site = Column(String(100))  # 站点
     type = Column(String(100))  # 分类
@@ -37,6 +38,7 @@ class Movies(Base):
         movies = session.query(cls).filter(Movies.id == id).first()
         session.close()
         return movies
+
 
 if __name__ == '__main__':
     orm = ORM()

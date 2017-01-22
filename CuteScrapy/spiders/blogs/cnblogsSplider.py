@@ -13,7 +13,7 @@ from CuteScrapy.util.date import parseDateString
 __author__ = 'HuijunZhang'
 
 class BlogsSplider(CrawlSpider):
-    name = 'blogs.cnblogs.list'
+    name = 'blogs.cnblogs'
     custom_settings = {
         'RETRY_TIMES': 50,
         'ITEM_PIPELINES': {
@@ -85,4 +85,4 @@ class BlogsSplider(CrawlSpider):
 
 
 if __name__ == '__main__':
-    execute('scrapy crawl blogs.cnblogs.list'.split(' '))
+    execute('scrapy crawl blogs.cnblogs'.split(' '))
