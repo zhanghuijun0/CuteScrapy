@@ -1,4 +1,6 @@
 # coding:utf8
+import time
+
 from CuteScrapy.model.proxy import Proxy
 from CuteScrapy.util.CommonParser import CommonParser
 from CuteScrapy.util.logger import getLogger
@@ -22,8 +24,13 @@ class ProxyCheck():
                 if not status:
                     logging.error('id:%s,delete failed' % item.id)
                 else:
-                    logging.info('id:%s is expires.')
+                    logging.info('id:%s is expires.' % item.id)
+            time.sleep(5)
 
 
 if __name__ == '__main__':
-    ProxyCheck().run()
+    count = 1
+    while count < 10000:
+        logging.info('----------count:%s----------' % count)
+        ProxyCheck().run()
+        count += 1

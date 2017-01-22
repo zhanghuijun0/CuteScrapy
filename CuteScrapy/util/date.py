@@ -45,11 +45,36 @@ def timestamp2datetime(timestamp, convert_to_local=True):
         return dt
     return timestamp
 
+# 4小时、6天、1分钟、5秒
+def parseTime2Seconds(time):
+    if re.search(u'(\d+)天',time):
+        time = re.search(u'(\d+)天',time).group(1)
+        time = int(time)*24*60*60
+    elif re.search(u'(\d+)小时',time):
+        time = re.search(u'(\d+)小时', time).group(1)
+        time = int(time) *  60 * 60
+    elif re.search(u'(\d+)分钟',time):
+        time = re.search(u'(\d+)分钟', time).group(1)
+        time = int(time) * 60
+    elif re.search(u'([\d.]+)秒',time):
+        time = re.search(u'([\d.]+)秒', time).group(1)
+        time = float(time)
+    else:
+        time = None
+    return time
+
+
 if __name__ == '__main__':
-    print parseDateString(u'发布于 2017-01-10 18:10')
-    print parseDateString(u'昨天 18:20')
-    print parseDateString(u'3小时前')
-    print parseDateString(u'前天 14:30')
-    print parseDateString(u'6天前 10:27')
-    print parseDateString(u'12分钟前')
-    print timestamp2datetime(1484257158)
+    # print parseDateString(u'发布于 2017-01-10 18:10')
+    # print parseDateString(u'昨天 18:20')
+    # print parseDateString(u'3小时前')
+    # print parseDateString(u'前天 14:30')
+    # print parseDateString(u'6天前 10:27')
+    # print parseDateString(u'12分钟前')
+    # print timestamp2datetime(1484257158)
+    print parseTime2Seconds(u'4小时')
+    print parseTime2Seconds(u'4天')
+    print parseTime2Seconds(u'4分钟')
+    print parseTime2Seconds(u'0.046秒')
+    print parseTime2Seconds(u'6秒')
+
