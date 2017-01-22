@@ -24,6 +24,7 @@ class Applet(Base):
     page_url = Column(TEXT)  # 链接
     icon = Column(String(200))  # 图标
     qrcode = Column(TEXT)  # 小程序二维码
+    qrcode_conetnt = Column(TEXT)  # 小程序二维码
     pictures = Column(TEXT)  # 群应用截图
     publish_time = Column(TIMESTAMP)
     date_create = Column(DateTime, default=datetime.now)

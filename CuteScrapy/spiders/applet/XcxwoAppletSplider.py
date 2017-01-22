@@ -7,6 +7,7 @@ from scrapy.spiders import CrawlSpider
 from CuteScrapy.item.ModelItem import ModelItem
 from CuteScrapy.model.applet import Applet
 from CuteScrapy.util.CommonParser import CommonParser
+from CuteScrapy.util.ScannerQrcode import ScrannerQrcodeHelper
 
 __author__ = 'HuijunZhang'
 
@@ -60,11 +61,11 @@ class XcxwoSplider(CrawlSpider):
     def parse_list(self, response):
         for item in response.xpath('//body/div/a'):
             url = item.xpath('@href').extract_first()
-            # id = url.split('/')[-1]
             icon = item.xpath('div[@class="header"]/img/@src').extract_first()
             name = item.xpath('div[@class="header"]/div[@class="title left"]/h1/text()').extract_first()
-            author = self.commonParser.trim(item.xpath('div[@class="header"]/div[@class="title left"]/p/text()').extract_first().replace(u'发布者：',''))
-            id = hashlib.md5((u'%s%s%s' % (self.site, name, author)).encode("utf8")).hexdigest()
+            author = self.commonParser.trim(
+                item.xpath('div[@class="header"]/div[@class="title left"]/p/text()').extract_first().replace(u'发布者：',
+                                                                                                             ''))
             label = ','.join(item.xpath('div[@class="cate"]/span/text()').extract())
             star = len(item.xpath(
                 'div[@class="i-footer"]/div[@class="stars left"]/i[@class="fa fa-star star-active"]').extract())
@@ -72,8 +73,10 @@ class XcxwoSplider(CrawlSpider):
             heart = heart_share[1].replace(' ', '')
             share = heart_share[2].replace(' ', '')
             qrcode = item.xpath('div[@class="qrcodeTooltip"]/img/@src').extract_first()
+            qrcode_conetnt = ','.join(self.commonParser.getContentFromQrcode(qrcode))
+            id = hashlib.md5((u'%s%s' % (name, author)).encode("utf8")).hexdigest()
             applet = Applet()
-            applet.id = id
+            applet.id = '%s_%s' % (self.site, id)
             applet.site = self.site
             applet.name = name
             applet.author = author
@@ -84,15 +87,12 @@ class XcxwoSplider(CrawlSpider):
             applet.page_url = 'http://www.xcxwo.com%s' % url
             applet.icon = icon
             applet.qrcode = qrcode
-            if not self.applet.isExistById(id):
-                yield Request(
-                    'http://www.xcxwo.com%s' % url,
-                    meta={'type': 'detail', 'applet': applet},
-                    dont_filter=True
-                )
-            else:
-                self.logger.info('id:%s is exists' % id)
-                yield ModelItem.getInstance(applet)
+            applet.qrcode_conetnt = qrcode_conetnt
+            yield Request(
+                'http://www.xcxwo.com%s' % url,
+                meta={'type': 'detail', 'applet': applet},
+                dont_filter=True
+            )
         yield FormRequest(
             "http://www.xcxwo.com/app/appList",
             formdata={

@@ -1,4 +1,8 @@
 # coding:utf8
+import zbar
+from PIL import Image
+import urllib
+import cStringIO
 import json
 import time
 import requests
@@ -72,9 +76,40 @@ class CommonParser():
             }
         return result
 
+    def getContentFromQrcode(self, url):
+        result = []
+        try:
+            # 图片地址替换成你的qrcode图片地址
+            # create a reader
+            scanner = zbar.ImageScanner()
+            # configure the reader
+            scanner.parse_config('enable')
+            # obtain image data
+            imgfile = cStringIO.StringIO(urllib.urlopen(url).read())
+            pil = Image.open(imgfile).convert('L')
+            width, height = pil.size
+            raw = pil.tobytes()
+            # wrap image data
+            image = zbar.Image(width, height, 'Y800', raw)
+            # scan the image for barcodes
+            scanner.scan(image)
+            # extract results
+            for symbol in image:
+                # do something useful with results
+                print 'decoded', symbol.type, 'symbol', '"%s"' % symbol.data
+                result.append(symbol.data)
+            # clean up
+            del (image)
+        except Exception as e:
+            logging.error('%s  get Qrcode failed!' % url)
+        return result
+
 
 if __name__ == '__main__':
     # print CommonParser().trim('dasNo')
     # print CommonParser().parseLocationByIp('61.152.81.193')
     # print CommonParser().parseLocationByIp('153.125.232.180')
-    print CommonParser().check_proxy('http', '124.88.67.32:80')
+    # print CommonParser().check_proxy('http', '124.88.67.32:80')
+    # print CommonParser().getContentFromQrcode('https://ojib22q8q.qnssl.com/image/view/xcx_qrcode/4dc8a12d9a82c8c9c478637edabc06e2/300')
+    print CommonParser().getContentFromQrcode('https://ojib22q8q.qnssl.com/image/view/xcx_qrcode/5c59efb121228be1c1668c409ea7b541/300')
+    print CommonParser().getContentFromQrcode('http://media.ifanrusercontent.com/media/user_files/trochili/11/1c/111c1fef25db4e08704fbbd9a80ccc0234a158ef-e1470657bd8214aaeb029e32d9b755f60ac2b5f1.jpg')
