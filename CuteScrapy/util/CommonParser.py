@@ -104,6 +104,8 @@ class CommonParser():
             logging.error('%s  get Qrcode failed!' % url)
         return result
 
+    def replaceSpace(self, content):
+        return '  '.join(self.trim(content).split())
 
 if __name__ == '__main__':
     # print CommonParser().trim('dasNo')
