@@ -5,3 +5,7 @@
 .DS_Store
 *.pyc
 *.log
+build/
+eggs/
+dbs/
+project.egg-info/
