@@ -73,7 +73,7 @@ class XcxwoSplider(CrawlSpider):
             heart = heart_share[1].replace(' ', '')
             share = heart_share[2].replace(' ', '')
             qrcode = item.xpath('div[@class="qrcodeTooltip"]/img/@src').extract_first()
-            qrcode_conetnt = ','.join(self.commonParser.getContentFromQrcode(qrcode))
+            # qrcode_conetnt = ','.join(self.commonParser.getContentFromQrcode(qrcode))
             id = hashlib.md5((u'%s%s' % (name, author)).encode("utf8")).hexdigest()
             applet = Applet()
             applet.id = '%s_%s' % (self.site, id)
@@ -87,7 +87,7 @@ class XcxwoSplider(CrawlSpider):
             applet.page_url = 'http://www.xcxwo.com%s' % url
             applet.icon = icon
             applet.qrcode = qrcode
-            applet.qrcode_conetnt = qrcode_conetnt
+            # applet.qrcode_conetnt = qrcode_conetnt
             yield Request(
                 'http://www.xcxwo.com%s' % url,
                 meta={'type': 'detail', 'applet': applet},

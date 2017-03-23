@@ -107,11 +107,31 @@ class CommonParser():
     def replaceSpace(self, content):
         return '  '.join(self.trim(content).split())
 
+    def getLatLonByCityName(self, cityName):
+        url = "http://api.map.baidu.com/geocoder/v2/"
+        data = {
+            "address": cityName,
+            "output": "json",
+            "ak": "Ho67R16G4IhaBKwyKbHGd9yFbMRq54jq",
+            "callback": ""
+        }
+        result = json.loads(requests.post(url, data=data).text)
+        if result.get('status')==0:
+            location = result.get('result').get('location')
+            lat = location.get('lat')
+            lng = location.get('lng')
+            return lng,lat
+        else:
+            return None
+
 if __name__ == '__main__':
     # print CommonParser().trim('dasNo')
     # print CommonParser().parseLocationByIp('61.152.81.193')
     # print CommonParser().parseLocationByIp('153.125.232.180')
     # print CommonParser().check_proxy('http', '124.88.67.32:80')
     # print CommonParser().getContentFromQrcode('https://ojib22q8q.qnssl.com/image/view/xcx_qrcode/4dc8a12d9a82c8c9c478637edabc06e2/300')
-    print CommonParser().getContentFromQrcode('https://ojib22q8q.qnssl.com/image/view/xcx_qrcode/5c59efb121228be1c1668c409ea7b541/300')
-    print CommonParser().getContentFromQrcode('http://media.ifanrusercontent.com/media/user_files/trochili/11/1c/111c1fef25db4e08704fbbd9a80ccc0234a158ef-e1470657bd8214aaeb029e32d9b755f60ac2b5f1.jpg')
+    # print CommonParser().getContentFromQrcode(
+    #     'https://ojib22q8q.qnssl.com/image/view/xcx_qrcode/5c59efb121228be1c1668c409ea7b541/300')
+    # print CommonParser().getContentFromQrcode(
+    #     'http://media.ifanrusercontent.com/media/user_files/trochili/11/1c/111c1fef25db4e08704fbbd9a80ccc0234a158ef-e1470657bd8214aaeb029e32d9b755f60ac2b5f1.jpg')
+    print CommonParser().getLatLonByCityName(u'东莞')

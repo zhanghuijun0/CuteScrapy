@@ -65,7 +65,7 @@ class MinappSplider(CrawlSpider):
             page_url = 'https://minapp.com/miniapp/%s/' % item.get('id')
             icon = item.get('icon').get('image')
             qrcode = item.get('qrcode').get('image')
-            qrcode_conetnt = ','.join(self.commonParser.getContentFromQrcode(qrcode))
+            # qrcode_conetnt = ','.join(self.commonParser.getContentFromQrcode(qrcode))
             pictures = []
             for screenshot in item.get('screenshot'):
                 pictures.append(screenshot.get('image'))
@@ -86,7 +86,7 @@ class MinappSplider(CrawlSpider):
             applet.page_url = page_url
             applet.icon = icon
             applet.qrcode = qrcode
-            applet.qrcode_conetnt = qrcode_conetnt
+            # applet.qrcode_conetnt = qrcode_conetnt
             applet.pictures = pictures
             applet.summary = summary
             applet.publish_time = publish_time
