@@ -2,6 +2,7 @@
 # http://www.jetbrains.com/pycharm/webhelp/project.html
 .idea
 .iml
+*.txt
 .DS_Store
 *.pyc
 *.log
