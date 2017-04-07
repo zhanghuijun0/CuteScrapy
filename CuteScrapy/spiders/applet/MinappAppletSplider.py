@@ -65,7 +65,6 @@ class MinappSplider(CrawlSpider):
             page_url = 'https://minapp.com/miniapp/%s/' % item.get('id')
             icon = item.get('icon').get('image')
             qrcode = item.get('qrcode').get('image')
-            # qrcode_conetnt = ','.join(self.commonParser.getContentFromQrcode(qrcode))
             pictures = []
             for screenshot in item.get('screenshot'):
                 pictures.append(screenshot.get('image'))
@@ -81,12 +80,9 @@ class MinappSplider(CrawlSpider):
             applet.label = label
             applet.summary = summary
             applet.star = star
-            # applet.heart = heart
-            # applet.share = share
             applet.page_url = page_url
             applet.icon = icon
             applet.qrcode = qrcode
-            # applet.qrcode_conetnt = qrcode_conetnt
             applet.pictures = pictures
             applet.summary = summary
             applet.publish_time = publish_time
@@ -99,24 +95,6 @@ class MinappSplider(CrawlSpider):
                 meta={'type': 'list', 'page_no': response.meta['page_no']},
                 dont_filter=True
             )
-
-            # yield Request(
-            #     'https://minapp.com/api/v3/trochili/miniapp/stat/?id__in=%s&limit=%s' % (id_in, len(id_in)),
-            #     meta={'type': 'share','pri_id':pri_id, 'page_no': response.meta['page_no']},
-            #     dont_filter=True
-            # )
-            # def parse_share_vote(self, response):
-            #     body = json.loads(response.body_as_unicode())
-            #     for item in body.get('objects'):
-            #         id = '%s_%s' % (self.site, item.get('id'))
-            #         share_count = item.get('share_count')
-            #         vote_count = item.get('vote_count')
-            #         applet = Applet()
-            #         applet.id = id
-            #         applet.site = self.site
-            #         applet.share = share_count
-            #         applet.heart = vote_count
-            #         yield ModelItem.getInstance(applet)
 
 
 if __name__ == '__main__':

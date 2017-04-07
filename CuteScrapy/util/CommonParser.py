@@ -116,13 +116,21 @@ class CommonParser():
             "callback": ""
         }
         result = json.loads(requests.post(url, data=data).text)
-        if result.get('status')==0:
+        if result.get('status') == 0:
             location = result.get('result').get('location')
             lat = location.get('lat')
             lng = location.get('lng')
-            return lng,lat
+            return lng, lat
         else:
             return None
+
+    def getDictFromString(self, str):
+        res = {}
+        for item in urllib.unquote(str).split('&'):
+            k_v = item.split('=')
+            res[k_v[0]] = k_v[1]
+        return res
+
 
 if __name__ == '__main__':
     # print CommonParser().trim('dasNo')
@@ -134,4 +142,5 @@ if __name__ == '__main__':
     #     'https://ojib22q8q.qnssl.com/image/view/xcx_qrcode/5c59efb121228be1c1668c409ea7b541/300')
     # print CommonParser().getContentFromQrcode(
     #     'http://media.ifanrusercontent.com/media/user_files/trochili/11/1c/111c1fef25db4e08704fbbd9a80ccc0234a158ef-e1470657bd8214aaeb029e32d9b755f60ac2b5f1.jpg')
-    print CommonParser().getLatLonByCityName(u'东莞')
+    # print CommonParser().getLatLonByCityName(u'东莞')
+    print CommonParser().getDictFromString('filter=&hasDeal=false&keyName=%E5%9B%A7%E5%93%A5&order=NRI&nonce=02b470cba&xyz=fea918dd8f8c6ef11e86c133488307d0')

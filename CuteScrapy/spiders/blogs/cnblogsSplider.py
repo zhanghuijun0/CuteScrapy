@@ -12,6 +12,7 @@ from CuteScrapy.util.date import parseDateString
 
 __author__ = 'HuijunZhang'
 
+
 class BlogsSplider(CrawlSpider):
     name = 'blogs.cnblogs'
     custom_settings = {
@@ -32,7 +33,7 @@ class BlogsSplider(CrawlSpider):
         self.site = 'cnblogs'
 
     def start_requests(self):
-        for i in range(1,20):
+        for i in range(1, 20):
             yield Request(
                 "http://www.cnblogs.com/sitehome/p/%d" % (i),
                 meta={'type': 'list'},
@@ -81,7 +82,6 @@ class BlogsSplider(CrawlSpider):
             blogs.publish_time = parseDateString(dateStr)
             blogs.date_update = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             yield ModelItem.getInstance(blogs)
-
 
 
 if __name__ == '__main__':
