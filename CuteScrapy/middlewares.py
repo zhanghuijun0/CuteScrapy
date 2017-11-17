@@ -8,7 +8,7 @@ class RandomProxyMiddleware(object):
         pass
 
     def process_request(self, request, spider):
-        request.meta['proxy'] = 'http://127.0.0.1:8888'
+        request.meta['proxy'] = 'http://182.37.31.50:809'
 
     def process_exception(self, request, exception, spider):
         request.meta['proxy'] = 'http://127.0.0.1:8888'
